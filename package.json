@@ -1,0 +1,26 @@
+{
+	"name": "range-slider-input",
+	"version": "0.1.0",
+	"private": false,
+	"description": "Range slider input to capture a range of values with two drag handles",
+	"author": "Utkarsh Verma",
+	"keywords": [
+		"range",
+		"slider",
+		"input",
+		"drag",
+		"ui"
+	],
+	"main": "index.js",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/n3r4zzurr0/range-slider-input.git"
+	},
+	"scripts": {
+		"test": "standard"
+	},
+	"devDependencies": {
+		"standard": "^17.0.0"
+	}
+}
