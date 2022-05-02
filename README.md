@@ -19,7 +19,7 @@ npm install range-slider-input
 import rangeSlider from 'range-slider-input';
 import 'range-slider-input/style.css';
 
-const rangeSlider = rangeSlider(element);
+const rangeSliderElement = rangeSlider(element);
 ```
 
 ## API
@@ -36,25 +36,28 @@ Returns an object of functions that can be called to read or write the propertie
 
 #### `options`
 
-An object that specifies the characteristics of the range slider element with the following available properties:
+Object that specifies the characteristics of the range slider element with the following available properties:
 
 *   ####  `min`
 
     Default value: `0`
 
-    A number that specifies the lowest value in the range of permitted values. Its value must be less than that of `max`.
+    Number that specifies the lowest value in the range of permitted values.
+    Its value must be less than that of `max`.
 
 *   ####  `max`
 
     Default value: `1`
 
-    A number that specifies the greatest value in the range of permitted values. Its value must be greater than that of `min`.
+    Number that specifies the greatest value in the range of permitted values.
+    Its value must be greater than that of `min`.
 
 *   ####  `step`
 
     Default value: `any`
 
-    A number that specifies the amount by which the slider value(s) will change upon user interaction. Other than numbers, the value of `step` can be a string value of `any`, which is the default value in this package.
+    Number that specifies the amount by which the slider value(s) will change upon user interaction.
+    Other than numbers, the value of `step` can be a string value of `any`, which is the default value in this package.
     
     From [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range#step),
 
@@ -64,14 +67,14 @@ An object that specifies the characteristics of the range slider element with th
 
     Default value: `[0.25, 0.75]`
 
-    An array of two numbers that specify the values of the lower and upper offsets of the range slider element respectively.
+    Array of two numbers that specify the values of the lower and upper offsets of the range slider element respectively.
 
 
 *   ####  `onInput`
 
     Default value: `false`
 
-    Function to be called when there is a change in the value(s) of range sliders upon user interaction or upon calling `min()`, `max()`, `step()` or `value()`.
+    Function to be called when there is a change in the value(s) of range sliders upon user interaction or upon calling [`min()`](#min-max-step-value-and-orientation), [`max()`](#min-max-step-value-and-orientation), [`step()`](#min-max-step-value-and-orientation) or [`value()`](#min-max-step-value-and-orientation).
     
 
 *   ####  `disabled`
@@ -91,18 +94,20 @@ An object that specifies the characteristics of the range slider element with th
 
     Default value: `[false, false]`
 
-    An array of two Booleans which specify if the lower and upper thumbs are disabled or not, respectively.
+    Array of two Booleans which specify if the lower and upper thumbs are disabled or not, respectively.
 
 *   ####  `orientation`
 
     Default value: `horizontal`
 
-    A string that specifies the axis along which the user interaction is to be registered. By default, the range slider element registers the user interaction along the X-axis. It takes two different values: `horizontal` and `vertical`.
+    String that specifies the axis along which the user interaction is to be registered.
+    By default, the range slider element registers the user interaction along the X-axis.
+    It takes two different values: `horizontal` and `vertical`.
     If the range slider element is styled to look vertical visually (e.g. `transform: rotate(90deg)`), setting `orientation` to `vertical` will make it register the user interaction along the Y-axis.
 
 ### Return value
 
-An object of functions that can be called to read or write the properties initially set by the `options` parameter. Available functions:
+Object of functions that can be called to read or write the properties initially set by the `options` parameter. Available functions:
 
 #### `min()`, `max()`, `step()`, `value()` and `orientation()`
 
