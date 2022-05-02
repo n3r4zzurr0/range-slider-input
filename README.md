@@ -117,7 +117,7 @@ E.g. Calling `step()` will return the `step` value, and calling `value([0, 0.5])
 #### `disabled()`, `rangeSlideDisabled()`
 
 The default parameter is set to `true`. So, if they are called without a parameter, they will set the corresponding values to `true`.
-Thus, calling `disabled()` or `disabled(true)` will set `options.disabled = true` and `disabled(false)` will set `options.disabled = false`.
+Thus, calling `disabled()` or `disabled(true)` will set `options.disabled = true` and calling `disabled(false)` will set `options.disabled = false`.
 
 #### `thumbsDisabled()`
 
