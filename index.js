@@ -38,7 +38,7 @@ module.exports = (element, options = {}) => {
   // Data Attributes
   const _dataLower = 'data-lower'
   const _dataUpper = 'data-upper'
-  const _dataActive = 'data-active'
+  const _dataFocused = 'data-focused'
   const _dataDisabled = 'data-disabled'
 
   const _document = document
@@ -74,13 +74,11 @@ module.exports = (element, options = {}) => {
     if (options[_thumbsDisabled] instanceof Array) {
       if (options[_thumbsDisabled].length === 1) { options[_thumbsDisabled].push(false) }
       if (options[_thumbsDisabled].length !== 1 && options[_thumbsDisabled].length !== 2) { options[_thumbsDisabled] = [false, false] }
-    } else { options[_thumbsDisabled] = [options[_thumbsDisabled], false] }
+    } else { options[_thumbsDisabled] = [options[_thumbsDisabled], options[_thumbsDisabled]] }
 
     // Boolean Values
     options[_thumbsDisabled][0] = !!options[_thumbsDisabled][0]
     options[_thumbsDisabled][1] = !!options[_thumbsDisabled][1]
-
-    console.log(options[_thumbsDisabled])
   }
 
   const setValue = (val, forceSet = false, callback = true) => {
@@ -226,7 +224,7 @@ module.exports = (element, options = {}) => {
       thumbDrag = index[_min] === i ? _min : _max
       thumbIndex = i
       isDragging = true
-      thumb[i][_setAttribute](_dataActive, '')
+      thumb[i][_setAttribute](_dataFocused, '')
     }
   }
 
@@ -237,7 +235,7 @@ module.exports = (element, options = {}) => {
       startPos = currentPosition(e, range)
       thumbDrag = false
       isDragging = true
-      range[_setAttribute](_dataActive, '')
+      range[_setAttribute](_dataFocused, '')
     }
   }
 
@@ -353,9 +351,9 @@ module.exports = (element, options = {}) => {
   // Add global listeners
   _document[_addEventListener]('pointermove', e => { drag(e) }, listenerOptions)
   _document[_addEventListener]('pointerup', () => {
-    thumb[0][_removeAttribute](_dataActive)
-    thumb[1][_removeAttribute](_dataActive)
-    range[_removeAttribute](_dataActive)
+    thumb[0][_removeAttribute](_dataFocused)
+    thumb[1][_removeAttribute](_dataFocused)
+    range[_removeAttribute](_dataFocused)
     isDragging = false
   }, listenerOptions)
   window[_addEventListener]('resize', () => {
@@ -379,7 +377,7 @@ module.exports = (element, options = {}) => {
         setValue('', true)
       } else { return input[0][_step] }
     },
-    values: (v = false) => {
+    value: (v = false) => {
       if (v) {
         syncThumbWidth()
         setValue({ min: v[0], max: v[1] }, true)
