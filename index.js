@@ -8,7 +8,7 @@ module.exports = (element, options = {}) => {
   // Slider value depending on the user interaction
   let sliderValue = { min: 0, max: 0 }
   // Slidable range limits (active when a <thumb> is disabled)
-  let rangeLimits = { min: 0, max: 0 }
+  const rangeLimits = { min: 0, max: 0 }
 
   // For dragging <thumb>s and <range>
   let maxWidth = 0
@@ -35,6 +35,12 @@ module.exports = (element, options = {}) => {
   const _thumbsDisabled = 'thumbsDisabled'
   const _rangeSlideDisabled = 'rangeSlideDisabled'
 
+  // Data Attributes
+  const _dataLower = 'data-lower'
+  const _dataUpper = 'data-upper'
+  const _dataActive = 'data-active'
+  const _dataDisabled = 'data-disabled'
+
   const _document = document
   const _parseFloat = parseFloat
   const _mathAbsolute = Math.abs
@@ -54,11 +60,27 @@ module.exports = (element, options = {}) => {
     return +n + '' === n + ''
   }
 
-  const safeValues = () => {
+  // Set min and max values to 1 if any of the min or max values are "invalid"
+  // Setting both values 1 will disable the slider
+  const safeMinMaxValues = () => {
     let error = false
     if (!isNumber(options[_min]) || !isNumber(options[_max])) { error = true }
     options[_min] = error ? 1 : +options[_min]
     options[_max] = error ? 1 : +options[_max]
+  }
+
+  // Reframe the thumbsDisabled value if "invalid"
+  const safeThumbsDisabledValues = () => {
+    if (options[_thumbsDisabled] instanceof Array) {
+      if (options[_thumbsDisabled].length === 1) { options[_thumbsDisabled].push(false) }
+      if (options[_thumbsDisabled].length !== 1 && options[_thumbsDisabled].length !== 2) { options[_thumbsDisabled] = [false, false] }
+    } else { options[_thumbsDisabled] = [options[_thumbsDisabled], false] }
+
+    // Boolean Values
+    options[_thumbsDisabled][0] = !!options[_thumbsDisabled][0]
+    options[_thumbsDisabled][1] = !!options[_thumbsDisabled][1]
+
+    console.log(options[_thumbsDisabled])
   }
 
   const setValue = (val, forceSet = false, callback = true) => {
@@ -75,8 +97,8 @@ module.exports = (element, options = {}) => {
     value[_min] = +input[index[_min]][_value]
     value[_max] = +input[index[_max]][_value]
 
-    // Check if the values are correctly set
     if (forceSet) {
+      // Check if the values are correctly set
       if (value[_min] > value[_max]) {
         switchIndex()
         value[_min] = +input[index[_min]][_value]
@@ -99,14 +121,15 @@ module.exports = (element, options = {}) => {
     }
   }
 
+  // Switch <thumb> indexes whenever lower and upper <thumb>s switch positions
   const switchIndex = () => {
     index[_min] = +!index[_min]
     index[_max] = +!index[_max]
-    thumb[index[_min]][_removeAttribute]('data-upper')
-    thumb[index[_max]][_removeAttribute]('data-lower')
-    thumb[index[_min]][_setAttribute]('data-lower', '')
-    thumb[index[_max]][_setAttribute]('data-upper', '')
-    if (thumbDrag) { thumbDrag = thumbDrag === 'min' ? 'max' : 'min' }
+    thumb[index[_min]][_removeAttribute](_dataUpper)
+    thumb[index[_max]][_removeAttribute](_dataLower)
+    thumb[index[_min]][_setAttribute](_dataLower, '')
+    thumb[index[_max]][_setAttribute](_dataUpper, '')
+    if (thumbDrag) { thumbDrag = thumbDrag === _min ? _max : _min }
   }
 
   const updateInputState = () => {
@@ -141,6 +164,12 @@ module.exports = (element, options = {}) => {
     range.style.width = `${(((value[_max] - options[_min]) / maxWidth) - ((value[_min] - options[_min]) / maxWidth) - deltaLeft + deltaWidth) * 100}%`
   }
 
+  const updateRangeLimits = () => {
+    rangeLimits[_min] = options[_thumbsDisabled][0] ? value[_min] : options[_min]
+    rangeLimits[_max] = options[_thumbsDisabled][1] ? value[_max] : options[_max]
+  }
+
+  // <thumb> width value is to be synced with CSS for correct calculation of <range> width and position
   const syncThumbWidth = () => {
     thumbWidth[_min] = _parseFloat(_getComputedStyle(thumb[index[_min]]).width)
     thumbWidth[_max] = _parseFloat(_getComputedStyle(thumb[index[_max]]).width)
@@ -194,10 +223,10 @@ module.exports = (element, options = {}) => {
     if (!options[_disabled] && !options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) {
       syncThumbWidth()
       startPos = currentPosition(e, node)
-      thumbDrag = index[_min] === i ? 'min' : 'max'
+      thumbDrag = index[_min] === i ? _min : _max
       thumbIndex = i
       isDragging = true
-      thumb[i][_setAttribute]('data-active', '')
+      thumb[i][_setAttribute](_dataActive, '')
     }
   }
 
@@ -208,7 +237,7 @@ module.exports = (element, options = {}) => {
       startPos = currentPosition(e, range)
       thumbDrag = false
       isDragging = true
-      range[_setAttribute]('data-active', '')
+      range[_setAttribute](_dataActive, '')
     }
   }
 
@@ -227,8 +256,8 @@ module.exports = (element, options = {}) => {
       const lower = thumbDrag ? rangeLimits[_min] : options[_min]
       const upper = thumbDrag ? rangeLimits[_max] : options[_max]
 
-      if (!thumbDrag || thumbDrag === 'min') { min = thumbDrag ? lastPos : (sliderValue[_min] + delta) }
-      if (!thumbDrag || thumbDrag === 'max') { max = thumbDrag ? lastPos : (sliderValue[_max] + delta) }
+      if (!thumbDrag || thumbDrag === _min) { min = thumbDrag ? lastPos : (sliderValue[_min] + delta) }
+      if (!thumbDrag || thumbDrag === _max) { max = thumbDrag ? lastPos : (sliderValue[_max] + delta) }
 
       if (min >= lower && min <= upper && max >= lower && max <= upper) {
         setValue({ min, max })
@@ -261,26 +290,22 @@ module.exports = (element, options = {}) => {
           maxSet = true
         }
       }
-      if (!thumbDrag) {
-        rangeLimits = {
-          min: options[_thumbsDisabled][0] ? value[_min] : options[_min],
-          max: options[_thumbsDisabled][1] ? value[_max] : options[_max]
-        }
-      }
+      if (!thumbDrag) { updateRangeLimits() }
     }
   }
 
   const updateLimits = (limit, m = false) => {
     if (m || m === 0) {
       options[limit] = m
-      safeValues()
-      input[0][_setAttribute]('min', options[_min])
-      input[0][_setAttribute]('max', options[_max])
-      input[1][_setAttribute]('min', options[_min])
-      input[1][_setAttribute]('max', options[_max])
+      safeMinMaxValues()
+      input[0][_setAttribute](_min, options[_min])
+      input[0][_setAttribute](_max, options[_max])
+      input[1][_setAttribute](_min, options[_min])
+      input[1][_setAttribute](_max, options[_max])
       maxWidth = options[_max] - options[_min]
       syncThumbWidth()
       setValue('', true)
+      updateRangeLimits()
     } else { return options[limit] }
   }
 
@@ -295,12 +320,13 @@ module.exports = (element, options = {}) => {
   fallbackToDefault(_min, 0)
   fallbackToDefault(_max, 1)
 
-  safeValues()
+  safeMinMaxValues()
+  safeThumbsDisabledValues()
 
   // Fill wrapper element
-  element.innerHTML = `<input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][0]}"><input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][1]}"><thumb data-lower></thumb><thumb data-upper></thumb><range></range>`
+  element.innerHTML = `<input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][0]}"><input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][1]}"><thumb ${_dataLower}></thumb><thumb ${_dataUpper}></thumb><range></range>`
   element.classList.add('range-slider')
-  if (options[_disabled]) { element[_setAttribute]('data-disabled', '') }
+  if (options[_disabled]) { element[_setAttribute](_dataDisabled, '') }
 
   const range = element[_getElementsByTagName]('range')[0]
   const input = element[_getElementsByTagName]('input')
@@ -310,10 +336,7 @@ module.exports = (element, options = {}) => {
   maxWidth = options[_max] - options[_min]
   syncThumbWidth()
   setValue('', true, false)
-  rangeLimits = {
-    min: options[_thumbsDisabled][0] ? value[_min] : options[_min],
-    max: options[_thumbsDisabled][1] ? value[_max] : options[_max]
-  }
+  updateRangeLimits()
 
   // Add listeners to element
   element[_addEventListener]('pointerdown', e => { elementFocused(e) }, listenerOptions)
@@ -321,7 +344,7 @@ module.exports = (element, options = {}) => {
   // Add listeners to <thumb>s and set [data-disabled] on disabled <thumb>s
   Array.from(thumb).forEach((t, i) => {
     t[_addEventListener]('pointerdown', e => { initiateThumbDrag(e, i, t) }, listenerOptions)
-    if (options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) { t[_setAttribute]('data-disabled', '') }
+    if (options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) { t[_setAttribute](_dataDisabled, '') }
   })
 
   // Add listeners to <range>
@@ -330,9 +353,9 @@ module.exports = (element, options = {}) => {
   // Add global listeners
   _document[_addEventListener]('pointermove', e => { drag(e) }, listenerOptions)
   _document[_addEventListener]('pointerup', () => {
-    thumb[0][_removeAttribute]('data-active')
-    thumb[1][_removeAttribute]('data-active')
-    range[_removeAttribute]('data-active')
+    thumb[0][_removeAttribute](_dataActive)
+    thumb[1][_removeAttribute](_dataActive)
+    range[_removeAttribute](_dataActive)
     isDragging = false
   }, listenerOptions)
   window[_addEventListener]('resize', () => {
@@ -343,10 +366,10 @@ module.exports = (element, options = {}) => {
 
   return {
     min: (m = false) => {
-      return updateLimits('min', m)
+      return updateLimits(_min, m)
     },
     max: (m = false) => {
-      return updateLimits('max', m)
+      return updateLimits(_max, m)
     },
     step: (s = false) => {
       if (s) {
@@ -363,17 +386,22 @@ module.exports = (element, options = {}) => {
       } else { return [value[_min], value[_max]] }
     },
     disabled: (d = true) => {
-      if (d) { element[_setAttribute]('data-disabled', '') } else { element[_removeAttribute]('data-disabled') }
-      options[_disabled] = d
+      options[_disabled] = !!d
+      if (options[_disabled]) { element[_setAttribute](_dataDisabled, '') } else { element[_removeAttribute](_dataDisabled) }
     },
     orientation: (o = false) => {
       if (o) { options[_orientation] = o } else { return options[_orientation] }
     },
     thumbsDisabled: (t = [true, true]) => {
       options[_thumbsDisabled] = t
+      safeThumbsDisabledValues()
+      updateRangeLimits()
+      options[_thumbsDisabled].forEach((d, i) => {
+        if (d) { thumb[i === 1 ? index.max : index.min][_setAttribute](_dataDisabled, '') } else { thumb[i === 1 ? index.max : index.min][_removeAttribute](_dataDisabled) }
+      })
     },
     rangeSlideDisabled: (d = true) => {
-      options[_rangeSlideDisabled] = d
+      options[_rangeSlideDisabled] = !!d
     }
   }
 }
