@@ -7,6 +7,8 @@ module.exports = (element, options = {}) => {
   const thumbWidth = { min: 0, max: 0 }
   // Slider value depending on the user interaction
   let sliderValue = { min: 0, max: 0 }
+  // Slidable range limits (active when a <thumb> is disabled)
+  let rangeLimits = { min: 0, max: 0 }
 
   // For dragging <thumb>s and <range>
   let maxWidth = 0
@@ -21,6 +23,18 @@ module.exports = (element, options = {}) => {
   let minSet = false
 
   // For minification
+
+  // Options
+  const _min = 'min'
+  const _max = 'max'
+  const _step = 'step'
+  const _value = 'value'
+  const _onInput = 'onInput'
+  const _disabled = 'disabled'
+  const _orientation = 'orientation'
+  const _thumbsDisabled = 'thumbsDisabled'
+  const _rangeSlideDisabled = 'rangeSlideDisabled'
+
   const _document = document
   const _parseFloat = parseFloat
   const _mathAbsolute = Math.abs
@@ -42,71 +56,71 @@ module.exports = (element, options = {}) => {
 
   const safeValues = () => {
     let error = false
-    if (!isNumber(options.min) || !isNumber(options.max)) { error = true }
-    options.min = error ? 1 : +options.min
-    options.max = error ? 1 : +options.max
+    if (!isNumber(options[_min]) || !isNumber(options[_max])) { error = true }
+    options[_min] = error ? 1 : +options[_min]
+    options[_max] = error ? 1 : +options[_max]
   }
 
   const setValue = (val, forceSet = false, callback = true) => {
     const currentValue = {
-      min: input[index.min].value,
-      max: input[index.max].value
+      min: input[index[_min]][_value],
+      max: input[index[_max]][_value]
     }
 
     val = val || currentValue
 
     sliderValue = val
-    input[index.min].value = val.min
-    input[index.max].value = (thumbDrag || forceSet) ? val.max : (val.min + rangeWidth)
-    value.min = +input[index.min].value
-    value.max = +input[index.max].value
+    input[index[_min]][_value] = val[_min]
+    input[index[_max]][_value] = (thumbDrag || forceSet) ? val[_max] : (val[_min] + rangeWidth)
+    value[_min] = +input[index[_min]][_value]
+    value[_max] = +input[index[_max]][_value]
 
     // Check if the values are correctly set
     if (forceSet) {
-      if (value.min > value.max) {
+      if (value[_min] > value[_max]) {
         switchIndex()
-        value.min = +input[index.min].value
-        value.max = +input[index.max].value
+        value[_min] = +input[index[_min]][_value]
+        value[_max] = +input[index[_max]][_value]
       }
       sliderValue = value
     }
 
     let valueSet = false
 
-    if (currentValue.min !== input[index.min].value || forceSet) { valueSet = true }
+    if (currentValue[_min] !== input[index[_min]][_value] || forceSet) { valueSet = true }
 
-    if (currentValue.max !== input[index.max].value || forceSet) { valueSet = true }
+    if (currentValue[_max] !== input[index[_max]][_value] || forceSet) { valueSet = true }
 
     // Update the <thumb>s and <range> positions and widths everytime a value is set
     if (valueSet) {
-      if (callback && options.oninput) { options.oninput([value.min, value.max]) }
+      if (callback && options[_onInput]) { options[_onInput]([value[_min], value[_max]]) }
       updateThumbs()
       updateRange()
     }
   }
 
   const switchIndex = () => {
-    index.min = +!index.min
-    index.max = +!index.max
-    thumb[index.min][_removeAttribute]('data-max')
-    thumb[index.max][_removeAttribute]('data-min')
-    thumb[index.min][_setAttribute]('data-min', '')
-    thumb[index.max][_setAttribute]('data-max', '')
+    index[_min] = +!index[_min]
+    index[_max] = +!index[_max]
+    thumb[index[_min]][_removeAttribute]('data-upper')
+    thumb[index[_max]][_removeAttribute]('data-lower')
+    thumb[index[_min]][_setAttribute]('data-lower', '')
+    thumb[index[_max]][_setAttribute]('data-upper', '')
     if (thumbDrag) { thumbDrag = thumbDrag === 'min' ? 'max' : 'min' }
   }
 
   const updateInputState = () => {
     let indexSwitched = false
 
-    if (thumbIndex === index.min) {
-      if (input[thumbIndex].value > value.max) {
+    if (thumbIndex === index[_min]) {
+      if (input[thumbIndex][_value] > value[_max]) {
         switchIndex()
         indexSwitched = true
       }
     }
 
-    if (thumbIndex === index.max) {
-      if (input[thumbIndex].value < value.min) {
+    if (thumbIndex === index[_max]) {
+      if (input[thumbIndex][_value] < value[_min]) {
         switchIndex()
         indexSwitched = true
       }
@@ -116,24 +130,24 @@ module.exports = (element, options = {}) => {
   }
 
   const updateThumbs = () => {
-    thumb[index.min].style.left = `calc(${((value.min - options.min) / maxWidth) * 100}% + ${(0.5 - ((value.min - options.min) / maxWidth)) * thumbWidth.min}px)`
-    thumb[index.max].style.left = `calc(${((value.max - options.min) / maxWidth) * 100}% + ${(0.5 - ((value.max - options.min) / maxWidth)) * thumbWidth.max}px)`
+    thumb[index[_min]].style.left = `calc(${((value[_min] - options[_min]) / maxWidth) * 100}% + ${(0.5 - ((value[_min] - options[_min]) / maxWidth)) * thumbWidth[_min]}px)`
+    thumb[index[_max]].style.left = `calc(${((value[_max] - options[_min]) / maxWidth) * 100}% + ${(0.5 - ((value[_max] - options[_min]) / maxWidth)) * thumbWidth[_max]}px)`
   }
 
   const updateRange = () => {
-    const deltaLeft = ((0.5 - ((value.min - options.min) / maxWidth)) * thumbWidth.min) / element.clientWidth
-    const deltaWidth = ((0.5 - ((value.max - options.min) / maxWidth)) * thumbWidth.max) / element.clientWidth
-    range.style.left = `${(((value.min - options.min) / maxWidth) + deltaLeft) * 100}%`
-    range.style.width = `${(((value.max - options.min) / maxWidth) - ((value.min - options.min) / maxWidth) - deltaLeft + deltaWidth) * 100}%`
+    const deltaLeft = ((0.5 - ((value[_min] - options[_min]) / maxWidth)) * thumbWidth[_min]) / element.clientWidth
+    const deltaWidth = ((0.5 - ((value[_max] - options[_min]) / maxWidth)) * thumbWidth[_max]) / element.clientWidth
+    range.style.left = `${(((value[_min] - options[_min]) / maxWidth) + deltaLeft) * 100}%`
+    range.style.width = `${(((value[_max] - options[_min]) / maxWidth) - ((value[_min] - options[_min]) / maxWidth) - deltaLeft + deltaWidth) * 100}%`
   }
 
   const syncThumbWidth = () => {
-    thumbWidth.min = _parseFloat(_getComputedStyle(thumb[index.min]).width)
-    thumbWidth.max = _parseFloat(_getComputedStyle(thumb[index.max]).width)
+    thumbWidth[_min] = _parseFloat(_getComputedStyle(thumb[index[_min]]).width)
+    thumbWidth[_max] = _parseFloat(_getComputedStyle(thumb[index[_max]]).width)
   }
 
   const currentPosition = (e, node) => {
-    return ((node.offsetLeft + (e.clientX - node.getBoundingClientRect().left) - (thumbDrag ? ((0.5 - (value[thumbDrag] - options.min) / maxWidth) * thumbWidth[thumbDrag]) : 0)) / element.clientWidth) * maxWidth + options.min
+    return ((node.offsetLeft + (e[`client${options[_orientation] === 'vertical' ? 'Y' : 'X'}`] - node.getBoundingClientRect()[options[_orientation] === 'vertical' ? 'top' : 'left']) - (thumbDrag ? ((0.5 - (value[thumbDrag] - options[_min]) / maxWidth) * thumbWidth[thumbDrag]) : 0)) / element.clientWidth) * maxWidth + options[_min]
   }
 
   const eventElementTagName = e => {
@@ -143,28 +157,44 @@ module.exports = (element, options = {}) => {
   const elementFocused = e => {
     let setFocus = false
 
-    if (eventElementTagName(e) !== 'thumb' && eventElementTagName(e) !== 'range') { setFocus = true }
-
-    if (options.rangeSlideDisabled && eventElementTagName(e) !== 'thumb') { setFocus = true }
+    if ((eventElementTagName(e) !== 'thumb' && eventElementTagName(e) !== 'range') || (options[_rangeSlideDisabled] && eventElementTagName(e) !== 'thumb')) { setFocus = true }
 
     if (setFocus) {
-      let nearestThumbIndex = 1
-      const currPos = currentPosition(e, range)
-      const deltaMin = _mathAbsolute(value.min - currPos)
-      const deltaMax = _mathAbsolute(value.max - currPos)
-      if (deltaMin === deltaMax) { setValue({ min: value.min, max: currPos }, true) } else {
-        setValue({ min: deltaMin < deltaMax ? currPos : value.min, max: deltaMax < deltaMin ? currPos : value.max }, true)
-        nearestThumbIndex = deltaMin < deltaMax ? index.min : index.max
+      if (options[_thumbsDisabled][0] && options[_thumbsDisabled][1]) { setFocus = false }
+    }
+
+    if (setFocus) {
+      let currPos = currentPosition(e, range)
+      if (currPos < 0) { currPos = 0 }
+      const deltaMin = _mathAbsolute(value[_min] - currPos)
+      const deltaMax = _mathAbsolute(value[_max] - currPos)
+
+      if (options[_thumbsDisabled][0]) {
+        if (currPos >= value[_min]) {
+          setValue({ min: value[_min], max: currPos }, true)
+          initiateThumbDrag(e, index[_max], thumb[index[_max]])
+        }
+      } else if (options[_thumbsDisabled][1]) {
+        if (currPos <= value[_max]) {
+          setValue({ min: currPos, max: value[_max] }, true)
+          initiateThumbDrag(e, index[_min], thumb[index[_min]])
+        }
+      } else {
+        let nearestThumbIndex = 1
+        if (deltaMin === deltaMax) { setValue({ min: value[_min], max: currPos }, true) } else {
+          setValue({ min: deltaMin < deltaMax ? currPos : value[_min], max: deltaMax < deltaMin ? currPos : value[_max] }, true)
+          nearestThumbIndex = deltaMin < deltaMax ? index[_min] : index[_max]
+        }
+        initiateThumbDrag(e, nearestThumbIndex, thumb[nearestThumbIndex])
       }
-      initiateThumbDrag(e, nearestThumbIndex, thumb[nearestThumbIndex])
     }
   }
 
   const initiateThumbDrag = (e, i, node) => {
-    if (!options.disabled) {
+    if (!options[_disabled] && !options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) {
       syncThumbWidth()
       startPos = currentPosition(e, node)
-      thumbDrag = index.min === i ? 'min' : 'max'
+      thumbDrag = index[_min] === i ? 'min' : 'max'
       thumbIndex = i
       isDragging = true
       thumb[i][_setAttribute]('data-active', '')
@@ -172,9 +202,9 @@ module.exports = (element, options = {}) => {
   }
 
   const initiateRangeDrag = e => {
-    if (!options.disabled && !options.rangeSlideDisabled) {
+    if (!options[_disabled] && !options[_rangeSlideDisabled]) {
       syncThumbWidth()
-      rangeWidth = value.max - value.min
+      rangeWidth = value[_max] - value[_min]
       startPos = currentPosition(e, range)
       thumbDrag = false
       isDragging = true
@@ -182,35 +212,59 @@ module.exports = (element, options = {}) => {
     }
   }
 
+  const valuesUpdated = lastPos => {
+    startPos = lastPos
+    updateInputState()
+  }
+
   const drag = e => {
     if (isDragging) {
       const lastPos = currentPosition(e, range)
       const delta = lastPos - startPos
 
-      let min = value.min
-      let max = value.max
+      let min = value[_min]
+      let max = value[_max]
+      const lower = thumbDrag ? rangeLimits[_min] : options[_min]
+      const upper = thumbDrag ? rangeLimits[_max] : options[_max]
 
-      if (!thumbDrag || thumbDrag === 'min') { min = thumbDrag ? lastPos : (sliderValue.min + delta) }
-      if (!thumbDrag || thumbDrag === 'max') { max = thumbDrag ? lastPos : (sliderValue.max + delta) }
+      if (!thumbDrag || thumbDrag === 'min') { min = thumbDrag ? lastPos : (sliderValue[_min] + delta) }
+      if (!thumbDrag || thumbDrag === 'max') { max = thumbDrag ? lastPos : (sliderValue[_max] + delta) }
 
-      if (min >= options.min && max <= options.max) {
+      if (min >= lower && min <= upper && max >= lower && max <= upper) {
         setValue({ min, max })
-        startPos = lastPos
-        updateInputState()
+        valuesUpdated(lastPos)
         maxSet = false
         minSet = false
       } else {
-        if (min < options.min && !minSet) {
-          if (!thumbDrag) { setValue({ min: options.min, max: value.max - value.min + options.min }) } else { setValue({ min: options.min, max: value.max }) }
-          startPos = lastPos
-          updateInputState()
+        // When min thumb reaches upper limit
+        if (min > upper && thumbDrag && !minSet) {
+          setValue({ min: upper, max: upper })
+          valuesUpdated(lastPos)
           minSet = true
         }
-        if (max > options.max && !maxSet) {
-          if (!thumbDrag) { setValue({ min: value.min - value.max + options.max, max: options.max }) } else { setValue({ min: value.min, max: options.max }) }
-          startPos = lastPos
-          updateInputState()
+        // When max thumb reaches lower limit
+        if (max < lower && thumbDrag && !maxSet) {
+          setValue({ min: lower, max: lower })
+          valuesUpdated(lastPos)
           maxSet = true
+        }
+        // When range / min thumb reaches lower limit
+        if (min < lower && !minSet) {
+          if (!thumbDrag) { setValue({ min: lower, max: value[_max] - value[_min] + lower }) } else { setValue({ min: lower, max: value[_max] }) }
+          valuesUpdated(lastPos)
+          minSet = true
+        }
+        // When range / max thumb reaches upper limit
+        if (max > upper && !maxSet) {
+          if (!thumbDrag) { setValue({ min: value[_min] - value[_max] + upper, max: upper }) } else { setValue({ min: value[_min], max: upper }) }
+          valuesUpdated(lastPos)
+          maxSet = true
+        }
+      }
+      if (!thumbDrag) {
+        rangeLimits = {
+          min: options[_thumbsDisabled][0] ? value[_min] : options[_min],
+          max: options[_thumbsDisabled][1] ? value[_max] : options[_max]
         }
       }
     }
@@ -220,47 +274,54 @@ module.exports = (element, options = {}) => {
     if (m || m === 0) {
       options[limit] = m
       safeValues()
-      input[0][_setAttribute]('min', options.min)
-      input[0][_setAttribute]('max', options.max)
-      input[1][_setAttribute]('min', options.min)
-      input[1][_setAttribute]('max', options.max)
-      maxWidth = options.max - options.min
+      input[0][_setAttribute]('min', options[_min])
+      input[0][_setAttribute]('max', options[_max])
+      input[1][_setAttribute]('min', options[_min])
+      input[1][_setAttribute]('max', options[_max])
+      maxWidth = options[_max] - options[_min]
       syncThumbWidth()
       setValue('', true)
     } else { return options[limit] }
   }
 
   // Set options to default values if not set
-  fallbackToDefault('rangeSlideDisabled', false)
-  fallbackToDefault('disabled', false)
-  fallbackToDefault('oninput', false)
-  fallbackToDefault('value', [0.25, 0.75])
-  fallbackToDefault('step', 'any')
-  fallbackToDefault('min', 0)
-  fallbackToDefault('max', 1)
+  fallbackToDefault(_rangeSlideDisabled, false)
+  fallbackToDefault(_thumbsDisabled, [false, false])
+  fallbackToDefault(_orientation, 'horizontal')
+  fallbackToDefault(_disabled, false)
+  fallbackToDefault(_onInput, false)
+  fallbackToDefault(_value, [0.25, 0.75])
+  fallbackToDefault(_step, 'any')
+  fallbackToDefault(_min, 0)
+  fallbackToDefault(_max, 1)
 
   safeValues()
 
   // Fill wrapper element
-  element.innerHTML = `<input type="range" min="${options.min}" max="${options.max}" step="${options.step}" value="${options.value[0]}"><input type="range" min="${options.min}" max="${options.max}" step="${options.step}" value="${options.value[1]}"><thumb data-min></thumb><thumb data-max></thumb><range></range>`
-  element.classList.add('range-slider-input')
-  if (options.disabled) { element[_setAttribute]('data-disabled', '') }
+  element.innerHTML = `<input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][0]}"><input type="range" min="${options[_min]}" max="${options[_max]}" step="${options[_step]}" value="${options[_value][1]}"><thumb data-lower></thumb><thumb data-upper></thumb><range></range>`
+  element.classList.add('range-slider')
+  if (options[_disabled]) { element[_setAttribute]('data-disabled', '') }
 
   const range = element[_getElementsByTagName]('range')[0]
   const input = element[_getElementsByTagName]('input')
   const thumb = element[_getElementsByTagName]('thumb')
 
   // Set initial values
-  maxWidth = options.max - options.min
+  maxWidth = options[_max] - options[_min]
   syncThumbWidth()
   setValue('', true, false)
+  rangeLimits = {
+    min: options[_thumbsDisabled][0] ? value[_min] : options[_min],
+    max: options[_thumbsDisabled][1] ? value[_max] : options[_max]
+  }
 
   // Add listeners to element
   element[_addEventListener]('pointerdown', e => { elementFocused(e) }, listenerOptions)
 
-  // Add listeners to <thumb>s
+  // Add listeners to <thumb>s and set [data-disabled] on disabled <thumb>s
   Array.from(thumb).forEach((t, i) => {
     t[_addEventListener]('pointerdown', e => { initiateThumbDrag(e, i, t) }, listenerOptions)
+    if (options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) { t[_setAttribute]('data-disabled', '') }
   })
 
   // Add listeners to <range>
@@ -289,24 +350,30 @@ module.exports = (element, options = {}) => {
     },
     step: (s = false) => {
       if (s) {
-        input[0].step = s
-        input[1].step = s
+        input[0][_step] = s
+        input[1][_step] = s
         syncThumbWidth()
         setValue('', true)
-      } else { return input[0].step }
+      } else { return input[0][_step] }
     },
     values: (v = false) => {
       if (v) {
         syncThumbWidth()
         setValue({ min: v[0], max: v[1] }, true)
-      } else { return [value.min, value.max] }
+      } else { return [value[_min], value[_max]] }
     },
     disabled: (d = true) => {
       if (d) { element[_setAttribute]('data-disabled', '') } else { element[_removeAttribute]('data-disabled') }
-      options.disabled = d
+      options[_disabled] = d
+    },
+    orientation: (o = false) => {
+      if (o) { options[_orientation] = o } else { return options[_orientation] }
+    },
+    thumbsDisabled: (t = [true, true]) => {
+      options[_thumbsDisabled] = t
     },
     rangeSlideDisabled: (d = true) => {
-      options.rangeSlideDisabled = d
+      options[_rangeSlideDisabled] = d
     }
   }
 }
