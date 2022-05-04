@@ -44,13 +44,13 @@ module.exports = (element, options = {}) => {
   const _document = document
   const _parseFloat = parseFloat
   const _mathAbsolute = Math.abs
-  const _getComputedStyle = window.getComputedStyle
   const _setAttribute = 'setAttribute'
   const _removeAttribute = 'removeAttribute'
   const _addEventListener = 'addEventListener'
+  const _getComputedStyle = window.getComputedStyle
   const _getElementsByTagName = 'getElementsByTagName'
 
-  const listenerOptions = { passive: false, capture: true }
+  const _listenerOptions = { passive: false, capture: true }
 
   const fallbackToDefault = (property, defaultValue) => {
     options[property] = Object.prototype.hasOwnProperty.call(options, property) ? options[property] : defaultValue
@@ -184,7 +184,7 @@ module.exports = (element, options = {}) => {
   const elementFocused = e => {
     let setFocus = false
 
-    if ((eventElementTagName(e) !== 'thumb' && eventElementTagName(e) !== 'range') || (options[_rangeSlideDisabled] && eventElementTagName(e) !== 'thumb')) { setFocus = true }
+    if (!options[_disabled] && ((eventElementTagName(e) !== 'thumb' && eventElementTagName(e) !== 'range') || (options[_rangeSlideDisabled] && eventElementTagName(e) !== 'thumb'))) { setFocus = true }
 
     if (setFocus) {
       if (options[_thumbsDisabled][0] && options[_thumbsDisabled][1]) { setFocus = false }
@@ -337,25 +337,27 @@ module.exports = (element, options = {}) => {
   updateRangeLimits()
 
   // Add listeners to element
-  element[_addEventListener]('pointerdown', e => { elementFocused(e) }, listenerOptions)
+  element[_addEventListener]('pointerdown', e => { elementFocused(e) }, _listenerOptions)
 
   // Add listeners to <thumb>s and set [data-disabled] on disabled <thumb>s
   Array.from(thumb).forEach((t, i) => {
-    t[_addEventListener]('pointerdown', e => { initiateThumbDrag(e, i, t) }, listenerOptions)
+    t[_addEventListener]('pointerdown', e => { initiateThumbDrag(e, i, t) }, _listenerOptions)
     if (options[_thumbsDisabled][i === 1 ? index[_max] : index[_min]]) { t[_setAttribute](_dataDisabled, '') }
   })
 
   // Add listeners to <range>
-  range[_addEventListener]('pointerdown', e => { initiateRangeDrag(e) }, listenerOptions)
+  range[_addEventListener]('pointerdown', e => { initiateRangeDrag(e) }, _listenerOptions)
 
   // Add global listeners
-  _document[_addEventListener]('pointermove', e => { drag(e) }, listenerOptions)
+  _document[_addEventListener]('pointermove', e => { drag(e) }, _listenerOptions)
   _document[_addEventListener]('pointerup', () => {
-    thumb[0][_removeAttribute](_dataFocused)
-    thumb[1][_removeAttribute](_dataFocused)
-    range[_removeAttribute](_dataFocused)
-    isDragging = false
-  }, listenerOptions)
+    if (isDragging) {
+      thumb[0][_removeAttribute](_dataFocused)
+      thumb[1][_removeAttribute](_dataFocused)
+      range[_removeAttribute](_dataFocused)
+      isDragging = false
+    }
+  }, _listenerOptions)
   window[_addEventListener]('resize', () => {
     syncThumbWidth()
     updateThumbs()
