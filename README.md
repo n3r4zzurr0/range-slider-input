@@ -7,7 +7,8 @@
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
 
-# range-slider-input [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![size][size-image]][size-url] [![javascript style guide][standard-image]][standard-url]
+# range-slider-input
+[![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![size][size-image]][size-url] [![javascript style guide][standard-image]][standard-url]
 
 Customizable range slider input to capture a range of values with two drag handles.
 
