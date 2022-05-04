@@ -12,6 +12,12 @@
 		"ui"
 	],
 	"main": "index.js",
+	"files": [
+		"index.js",
+		"style.css",
+		"README.md",
+		"LICENSE"
+	],
 	"license": "MIT",
 	"repository": {
 		"type": "git",
