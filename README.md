@@ -149,7 +149,7 @@ thumbsDisabled([false, true])   //  enabled  disabled
 </div>
 ```
 
-`<div class="range-slider"></div>` is the wrapper element that was used to instantiate the range slider initially.
+`<div class="range-slider"></div>` is the wrapper element that was used to instantiate the range slider initially and is added with a CSS class named `range-slider`.
 
 `<input type="range" />` elements are used to set values and are hidden.
 
@@ -186,6 +186,9 @@ element-selector thumb[data-upper] {
     /* CSS for upper <thumb> */
 }
 ```
+
+Refer to the `style.css` file to know more about styling the range slider element and its children.
+
 
 ## License
 
