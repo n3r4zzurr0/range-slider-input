@@ -96,7 +96,7 @@ Object that specifies the characteristics of the range slider element with the f
 
     Default value: `[false, false]`
 
-    Array of two Booleans which specify if the lower and upper thumbs are disabled or not, respectively.
+    Array of two Booleans which specify if the lower and upper thumbs are disabled or not, respectively. If only one Boolean value is passed instead of an array, the value will apply to both thumbs.
 
 *   ####  `orientation`
 
@@ -137,10 +137,33 @@ thumbsDisabled([true, false])   // disabled   enabled
 thumbsDisabled([false, true])   //  enabled  disabled
 ```
 
+## Elements
+
+```html
+<div class="range-slider"><!-- range slider element -->
+    <input type="range" /><!-- hidden -->
+    <input type="range" /><!-- hidden -->
+    <thumb data-lower></thumb>
+    <thumb data-upper></thumb>
+    <range></range>
+</div>
+```
+
+`<div class="range-slider"></div>` is the wrapper element that was used to instantiate the range slider initially.
+
+`<input type="range" />` elements are used to set values and are hidden.
+
+`<thumb>` elements are the slidable thumbs replacing the original thumbs from the `<input type="range" />` elements.
+
+`<range>` element fills up the space between the thumbs.
+
+
 ## Styling
 
 ```css
-element-selector {}
+element-selector {
+    /* CSS for the wrapper element */
+}
 element-selector[data-disabled] {
     /* CSS for disabled range slider element */
 }
