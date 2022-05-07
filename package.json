@@ -1,6 +1,6 @@
 {
 	"name": "range-slider-input",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"private": false,
 	"description": "Customizable range slider input to capture a range of values with two drag handles",
 	"author": "Utkarsh Verma",
