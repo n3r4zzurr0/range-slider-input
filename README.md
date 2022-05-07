@@ -12,6 +12,8 @@
 
 Customizable range slider input to capture a range of values with two drag handles.
 
+**[Examples](https://n3r4zzurr0.in/range-slider-input/examples/) / [CodePen](https://codepen.io/n3r4zzurr0/pen/eYVJBMV)**
+
 ## Install
 ```
 npm install range-slider-input
@@ -160,6 +162,8 @@ thumbsDisabled([false, true])   //  enabled  disabled
 
 
 ## Styling
+
+**[View styled examples](https://n3r4zzurr0.in/range-slider-input/examples/#styled)**
 
 ```css
 element-selector {
