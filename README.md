@@ -17,14 +17,38 @@ Customizable range slider input to capture a range of values with two drag handl
 [![Demo](https://n3r4zzurr0.in/static/rsi-demo600.gif)](https://n3r4zzurr0.in/range-slider-input/examples/)
 
 ## Install
+
+**npm**
+
 ```
 npm install range-slider-input
 ```
 
+Import the `rangeSlider` constructor and the core CSS:
+
+```js
+import rangeSlider from 'range-slider-input';
+import 'range-slider-input/dist/style.css';
+```
+
+**CDN**
+
+```html
+<script src="https://unpkg.com/range-slider-input@1"></script>
+```
+
+or
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/range-slider-input@1"></script>
+```
+
+The core CSS comes bundled with the unpkg and jsDelivr imports.
+
 ## Usage
 ```js
 import rangeSlider from 'range-slider-input';
-import 'range-slider-input/style.css';
+import 'range-slider-input/dist/style.css';
 
 const rangeSliderElement = rangeSlider(element);
 ```

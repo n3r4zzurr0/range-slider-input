@@ -1,6 +1,6 @@
 {
 	"name": "range-slider-input",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"private": false,
 	"description": "Customizable range slider input to capture a range of values with two drag handles",
 	"author": "Utkarsh Verma",
@@ -11,10 +11,11 @@
 		"drag",
 		"ui"
 	],
-	"main": "index.js",
+	"main": "dist/rangeslider.min.js",
+	"unpkg": "dist/rangeslider.umd.min.js",
+	"jsdelivr": "dist/rangeslider.umd.min.js",
 	"files": [
-		"index.js",
-		"style.css",
+		"dist/",
 		"README.md",
 		"LICENSE"
 	],
