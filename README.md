@@ -40,7 +40,7 @@ import 'range-slider-input/dist/style.css';
 or
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/range-slider-input@1"></script>
+<script src="https://cdn.jsdelivr.net/npm/range-slider-input@1/dist/rangeslider.umd.min.js"></script>
 ```
 
 The core CSS comes bundled with the unpkg and jsDelivr imports.
