@@ -14,6 +14,8 @@ Customizable range slider input to capture a range of values with two drag handl
 
 **[Examples](https://n3r4zzurr0.in/range-slider-input/examples/) / [CodePen](https://codepen.io/n3r4zzurr0/pen/eYVJBMV)**
 
+[![Demo](https://n3r4zzurr0.in/static/rsi-demo600.gif)](https://n3r4zzurr0.in/range-slider-input/examples/)
+
 ## Install
 ```
 npm install range-slider-input
@@ -138,6 +140,8 @@ thumbsDisabled([false])         //  enabled   enabled
 thumbsDisabled([true])          // disabled   enabled
 thumbsDisabled([true, false])   // disabled   enabled
 thumbsDisabled([false, true])   //  enabled  disabled
+thumbsDisabled([false, false])  //  enabled   enabled
+thumbsDisabled([true, true])    // disabled  disabled
 ```
 
 ## Elements
@@ -178,17 +182,20 @@ element-selector range {
 element-selector range[data-focused] {
     /* CSS for focused <range> */
 }
-element-selector thumb[data-focused] {
-    /* CSS for focused <thumb>s */
-}
-element-selector thumb[data-disabled] {
-    /* CSS for disabled <thumb>s */
+element-selector thumb {
+    /* CSS for <thumb>s */
 }
 element-selector thumb[data-lower] {
     /* CSS for lower <thumb> */
 }
 element-selector thumb[data-upper] {
     /* CSS for upper <thumb> */
+}
+element-selector thumb[data-focused] {
+    /* CSS for focused <thumb>s */
+}
+element-selector thumb[data-disabled] {
+    /* CSS for disabled <thumb>s */
 }
 ```
 
