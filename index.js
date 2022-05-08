@@ -53,7 +53,7 @@ module.exports = (element, options = {}) => {
   const _listenerOptions = { passive: false, capture: true }
 
   const fallbackToDefault = (property, defaultValue) => {
-    options[property] = Object.prototype.hasOwnProperty.call(options, property) ? options[property] : defaultValue
+    options[property] = {}.hasOwnProperty.call(options, property) ? options[property] : defaultValue
   }
 
   const isNumber = n => {
