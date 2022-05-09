@@ -225,6 +225,9 @@ element-selector thumb[data-disabled] {
 
 Refer to the `style.css` file to know more about styling the range slider element and its children.
 
+## Component Wrappers
+
+React: [react-range-slider-input](https://www.npmjs.com/package/react-range-slider-input)
 
 ## License
 
