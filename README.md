@@ -34,16 +34,16 @@ import 'range-slider-input/dist/style.css';
 **CDN**
 
 ```html
-<script src="https://unpkg.com/range-slider-input@1"></script>
+<script src="https://cdn.jsdelivr.net/npm/range-slider-input@1/dist/rangeslider.umd.min.js"></script>
 ```
 
 or
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/range-slider-input@1/dist/rangeslider.umd.min.js"></script>
+<script src="https://unpkg.com/range-slider-input@1"></script>
 ```
 
-The core CSS comes bundled with the unpkg and jsDelivr imports.
+The core CSS comes bundled with the jsDelivr and unpkg imports.
 
 ## Usage
 ```js
