@@ -16,7 +16,7 @@ Customizable range slider input to capture a range of values with two drag handl
 
 [![Demo](https://n3r4zzurr0.in/static/rsi-demo600.gif)](https://n3r4zzurr0.in/range-slider-input/examples/)
 
-## Install
+## Installation
 
 **npm**
 
