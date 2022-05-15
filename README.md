@@ -10,11 +10,13 @@
 # range-slider-input
 [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![size][size-image]][size-url] [![javascript style guide][standard-image]][standard-url]
 
-Customizable range slider input to capture a range of values with two drag handles.
+Customizable range sliders to capture a range of values with two drag handles.
 
-**[Examples](https://n3r4zzurr0.in/range-slider-input/examples/) / [CodePen](https://codepen.io/n3r4zzurr0/pen/eYVJBMV)**
+**[Examples](https://n3r4zzurr0.in/range-slider-input/) / [CodePen](https://codepen.io/n3r4zzurr0/pen/eYVJBMV)**
 
-[![Demo](https://n3r4zzurr0.in/static/rsi-demo600.gif)](https://n3r4zzurr0.in/range-slider-input/examples/)
+[![Demo](https://n3r4zzurr0.in/static/rsi-demo600.gif)](https://n3r4zzurr0.in/range-slider-input/)
+
+![react-icon](https://n3r4zzurr0.in/static/react-icon.png) **React Component Wrapper: [react-range-slider-input](https://www.npmjs.com/package/react-range-slider-input)**
 
 ## Installation
 
@@ -225,9 +227,6 @@ element-selector thumb[data-disabled] {
 
 Refer to the `style.css` file to know more about styling the range slider element and its children.
 
-## Component Wrappers
-
-React: [react-range-slider-input](https://www.npmjs.com/package/react-range-slider-input)
 
 ## License
 
