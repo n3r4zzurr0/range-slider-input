@@ -1,33 +1,49 @@
 {
-	"name": "range-slider-input",
-	"version": "1.0.9",
-	"private": false,
-	"description": "Customizable range slider input to capture a range of values with two drag handles",
-	"author": "Utkarsh Verma",
-	"keywords": [
-		"range",
-		"slider",
-		"input",
-		"drag",
-		"ui"
-	],
-	"main": "dist/rangeslider.min.js",
-	"unpkg": "dist/rangeslider.umd.min.js",
-	"jsdelivr": "dist/rangeslider.umd.min.js",
-	"files": [
-		"dist/",
-		"README.md",
-		"LICENSE"
-	],
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/n3r4zzurr0/range-slider-input.git"
-	},
-	"scripts": {
-		"test": "standard"
-	},
-	"devDependencies": {
-		"standard": "^17.0.0"
-	}
+  "name": "range-slider-input",
+  "version": "1.0.9",
+  "private": false,
+  "description": "Customizable range slider input to capture a range of values with two drag handles",
+  "author": "Utkarsh Verma",
+  "keywords": [
+    "range",
+    "slider",
+    "input",
+    "drag",
+    "ui"
+  ],
+  "main": "dist/rangeslider.min.js",
+  "unpkg": "dist/rangeslider.umd.min.js",
+  "jsdelivr": "dist/rangeslider.umd.min.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n3r4zzurr0/range-slider-input.git"
+  },
+  "standard": {
+    "ignore": [
+      "src/index.test.js"
+    ]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "scripts": {
+    "test": "standard && jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@testing-library/dom": "^8.13.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "babel-jest": "^28.1.0",
+    "jest": "^28.1.0",
+    "jsdom": "^19.0.0",
+    "standard": "^17.0.0"
+  }
 }
