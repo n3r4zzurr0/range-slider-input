@@ -9,7 +9,10 @@
     "slider",
     "input",
     "drag",
-    "ui"
+    "slide",
+    "web",
+    "ui",
+    "front-end"
   ],
   "main": "dist/rangeslider.min.js",
   "unpkg": "dist/rangeslider.umd.min.js",
@@ -20,6 +23,7 @@
     "LICENSE"
   ],
   "license": "MIT",
+  "homepage": "https://n3r4zzurr0.in/range-slider-input/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/n3r4zzurr0/range-slider-input.git"
