@@ -1,8 +1,8 @@
 {
   "name": "range-slider-input",
-  "version": "1.0.10",
+  "version": "2.0.0",
   "private": false,
-  "description": "Customizable range sliders to capture a range of values with two drag handles",
+  "description": "A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles",
   "author": "Utkarsh Verma",
   "keywords": [
     "range",
@@ -20,6 +20,7 @@
   "files": [
     "dist/",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "license": "MIT",

@@ -8,7 +8,7 @@ const { window } = new JSDOM('<!doctype html><html><body><div></div><div></div><
 global.document = window.document
 global.window = window
 
-const element = document.getElementsByTagName('div');
+const element = document.getElementsByTagName('div')
 
 const sliderDefault = rangeSlider(element[0])
 
@@ -23,19 +23,19 @@ const sliderCustom = rangeSlider(element[1], {
 describe('index.html', () => {
 
   it('renders range sliders', () => {
-    Array.from(element).forEach(el => {
-      expect(el.children.length).toEqual(5)
-      expect(el.querySelectorAll('input').length).toEqual(2)
-      expect(el.querySelectorAll('thumb').length).toEqual(2)
-      expect(el.querySelectorAll('range').length).toEqual(1)
-    })
+    for(let i = 0; i < 1; i ++)
+      expect(element[i].children.length).toEqual(5)
+    expect(document.querySelectorAll('.range-slider').length).toEqual(2)
+    expect(document.querySelectorAll('.range-slider input[type=range]').length).toEqual(4)
+    expect(document.querySelectorAll('.range-slider .range-slider__thumb').length).toEqual(4)
+    expect(document.querySelectorAll('.range-slider .range-slider__range').length).toEqual(2)
   })
 
   test('returned functions return data as expected for a default slider', () => {
     expect(sliderDefault.min()).toEqual(0)
-    expect(sliderDefault.max()).toEqual(1)
-    expect(sliderDefault.step()).toEqual('any')
-    expect(sliderDefault.value()).toEqual([.25, .75])
+    expect(sliderDefault.max()).toEqual(100)
+    expect(sliderDefault.step()).toEqual(1)
+    expect(sliderDefault.value()).toEqual([25, 75])
     expect(sliderDefault.orientation()).toEqual('horizontal')
   })
 
@@ -72,11 +72,11 @@ describe('index.html', () => {
   test('step() sets data as expected', () => {
     
     // Invalid value
-    // Any invalid value will return NaN but the step value will be treated as 1 (integer)
-    // which is the default is case of a <input type="range" />
+    // Any invalid value will return 1 (default value)
+    // which is also the default in case of a <input type="range" />
     // MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range#step
     sliderDefault.step('string')
-    expect(sliderDefault.step()).toEqual(NaN)
+    expect(sliderDefault.step()).toEqual(1)
 
     // Valid value
     sliderDefault.step(2)
@@ -128,8 +128,8 @@ describe('index.html', () => {
 
   test('thumbsDisabled() sets data as expected', () => {
 
-    const lowerThumb = element[0].querySelector('[data-lower]');
-    const upperThumb = element[0].querySelector('[data-upper]');
+    const lowerThumb = element[0].querySelector('[data-lower]')
+    const upperThumb = element[0].querySelector('[data-upper]')
 
     sliderDefault.thumbsDisabled()
     expect(lowerThumb.hasAttribute('data-disabled')).not.toBeNull()
