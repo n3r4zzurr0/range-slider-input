@@ -31,7 +31,7 @@ A lightweight (~2kB) library to create range sliders that can capture a value or
 
 <hr>
 
-:warning: **It is recommended that you upgrade from v1.x to v2.x! [What's new and what's changed in v2.x?](https://n3r4zzurr0.in/range-slider-input/)**
+:warning: **It is recommended that you upgrade from v1.x to v2.x! [What's new and what's changed in v2.x?](https://github.com/n3r4zzurr0/range-slider-input/blob/main/CHANGELOG.md)**
 
 <hr>
 
