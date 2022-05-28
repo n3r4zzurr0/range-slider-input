@@ -13,10 +13,10 @@ const element = document.getElementsByTagName('div')
 const sliderDefault = rangeSlider(element[0])
 
 const sliderCustom = rangeSlider(element[1], {
-  min: 30,
+  min: -30,
   max: 90,
   step: 1,
-  value: [45, 75],
+  value: [-15, 75],
   orientation: 'vertical'
 })
 
@@ -40,10 +40,10 @@ describe('index.html', () => {
   })
 
   test('returned functions return data as expected for a custom slider', () => {
-    expect(sliderCustom.min()).toEqual(30)
+    expect(sliderCustom.min()).toEqual(-30)
     expect(sliderCustom.max()).toEqual(90)
     expect(sliderCustom.step()).toEqual(1)
-    expect(sliderCustom.value()).toEqual([45, 75])
+    expect(sliderCustom.value()).toEqual([-15, 75])
     expect(sliderCustom.orientation()).toEqual('vertical')
   })
 
@@ -170,6 +170,21 @@ describe('index.html', () => {
     sliderDefault.thumbsDisabled([true, true])
     expect(lowerThumb.hasAttribute('data-disabled')).not.toBeNull()
     expect(upperThumb.hasAttribute('data-disabled')).not.toBeNull()
+  })
+
+  test('keyboard accessibility', () => {
+
+    const lowerThumb = element[0].querySelector('[data-lower]')
+    lowerThumb.focus()
+
+    const keyDown = new window.KeyboardEvent('keydown', {'keyCode': 37})
+    const keyUp = new window.KeyboardEvent('keyup', {'keyCode': 37})
+
+    document.dispatchEvent(keyDown)
+    expect(lowerThumb.hasAttribute('data-active')).not.toBeNull()
+
+    document.dispatchEvent(keyUp)
+    expect(!lowerThumb.hasAttribute('data-active')).not.toBeNull()
   })
 
 })
