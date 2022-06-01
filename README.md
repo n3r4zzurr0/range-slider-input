@@ -12,7 +12,7 @@
 [license-url]: https://github.com/n3r4zzurr0/range-slider-input/blob/main/LICENSE
 
 # range-slider-input
-[![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![size][size-image]][size-url] [![vulnerabilities][vulnerabilities-image]][vulnerabilities-url] [![javascript style guide][standard-image]][standard-url] [![license][license-image]][license-url]
+[![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![minzipped size][size-image]][size-url] [![known vulnerabilities][vulnerabilities-image]][vulnerabilities-url] [![javascript style guide][standard-image]][standard-url] [![license][license-image]][license-url]
 
 A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles.
 
@@ -26,6 +26,7 @@ A lightweight (~2kB) library to create range sliders that can capture a value or
 - Supports negative values
 - Vertical orientation
 - Small and fast
+- Zero dependencies
 - Supported by all major browsers
 - Has a [React component wrapper](#component-wrappers)
 
@@ -34,6 +35,7 @@ A lightweight (~2kB) library to create range sliders that can capture a value or
 :warning: **It is recommended that you upgrade from v1.x to v2.x! [What's new and what's changed in v2.x?](https://github.com/n3r4zzurr0/range-slider-input/blob/main/CHANGELOG.md)**
 
 <hr>
+<br>
 
 
 ## Installation
