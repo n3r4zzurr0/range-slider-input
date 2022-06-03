@@ -32,7 +32,7 @@ A lightweight (~2kB) library to create range sliders that can capture a value or
 
 <hr>
 
-:warning: **It is recommended that you upgrade from v1.x to v2.x! [What's new and what's changed in v2.x?](https://github.com/n3r4zzurr0/range-slider-input/blob/main/CHANGELOG.md)**
+:warning: **It is recommended that you upgrade from v1.x to v2.x! [What's new and what's changed in v2.x?](https://github.com/n3r4zzurr0/range-slider-input/blob/main/CHANGELOG.md#v20x)**
 
 <hr>
 <br>
@@ -129,6 +129,30 @@ Object that specifies the characteristics of the range slider element with the f
     <td>function</td>
     <td>NOOP</td>
     <td>Function to be called when there is a change in the value(s) of range sliders upon user interaction or upon calling <a href="#min-max-step-value-and-orientation"><code>min()</code></a>, <a href="#min-max-step-value-and-orientation"><code>max()</code></a>, <a href="#min-max-step-value-and-orientation"><code>step()</code></a> or <a href="#min-max-step-value-and-orientation"><code>value()</code></a>.</td>
+</tr>
+<tr>
+    <td><code>onThumbDragStart</code></td>
+    <td>function</td>
+    <td>NOOP</td>
+    <td>Function to be called when the <code>pointerdown</code> event is triggered for any of the thumbs.</td>
+</tr>
+<tr>
+    <td><code>onThumbDragEnd</code></td>
+    <td>function</td>
+    <td>NOOP</td>
+    <td>Function to be called when the <code>pointerup</code> event is triggered for any of the thumbs.</td>
+</tr>
+<tr>
+    <td><code>onRangeDragStart</code></td>
+    <td>function</td>
+    <td>NOOP</td>
+    <td>Function to be called when the <code>pointerdown</code> event is triggered for the range.</td>
+</tr>
+<tr>
+    <td><code>onRangeDragEnd</code></td>
+    <td>function</td>
+    <td>NOOP</td>
+    <td>Function to be called when the <code>pointerup</code> event is triggered for the range.</td>
 </tr>
 <tr>
     <td><code>disabled</code></td>

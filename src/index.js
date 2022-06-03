@@ -297,6 +297,7 @@ module.exports = (element, options = {}) => {
     if (!options.disabled && !options.thumbsDisabled[currentIndex(i)]) {
       initiateDrag(e, node)
       thumbDrag = index.min === i ? MIN : MAX
+      if (options.onThumbDragStart) { options.onThumbDragStart() }
     }
   }
 
@@ -305,6 +306,7 @@ module.exports = (element, options = {}) => {
       initiateDrag(e, range)
       rangeWidth = value.max - value.min
       thumbDrag = false
+      if (options.onRangeDragStart) { options.onRangeDragStart() }
     }
   }
 
@@ -424,6 +426,10 @@ module.exports = (element, options = {}) => {
   fallbackToDefault('thumbsDisabled', [false, false])
   fallbackToDefault('orientation', 'horizontal')
   fallbackToDefault('disabled', false)
+  fallbackToDefault('onThumbDragStart', false)
+  fallbackToDefault('onRangeDragStart', false)
+  fallbackToDefault('onThumbDragEnd', false)
+  fallbackToDefault('onRangeDragEnd', false)
   fallbackToDefault('onInput', false)
   fallbackToDefault('value', [25, 75])
   fallbackToDefault('step', 1)
@@ -475,6 +481,11 @@ module.exports = (element, options = {}) => {
       removeNodeAttribute(thumb[1], DATA_ACTIVE)
       removeNodeAttribute(range, DATA_ACTIVE)
       isDragging = false
+      if (thumbDrag) {
+        if (options.onThumbDragEnd) { options.onThumbDragEnd() }
+      } else {
+        if (options.onRangeDragEnd) { options.onRangeDragEnd() }
+      }
     }
   })
   addNodeEventListener(window, 'resize', () => {

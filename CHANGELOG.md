@@ -1,4 +1,8 @@
-### v.2.0.x
+### v2.1.x
+New properties: `onThumbDragStart`, `onThumbDragEnd`, `onRangeDragStart` and `onRangeDragEnd`
+
+
+### v2.0.x
 Some new features have been introduced and some of the old features have been modified.
 
 What's new?
