@@ -1,5 +1,5 @@
 ### v2.2.x
-Added a return value property: `currentValueIndex()`
+Added a return value property: [`currentValueIndex()`](https://github.com/n3r4zzurr0/range-slider-input#currentvalueindex)
 
 ### v2.1.x
 Added properties: `onThumbDragStart`, `onThumbDragEnd`, `onRangeDragStart` and `onRangeDragEnd`
