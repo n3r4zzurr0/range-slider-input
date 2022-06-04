@@ -1,5 +1,8 @@
+### v2.2.x
+Added a return value property: `currentValueIndex()`
+
 ### v2.1.x
-New properties: `onThumbDragStart`, `onThumbDragEnd`, `onRangeDragStart` and `onRangeDragEnd`
+Added properties: `onThumbDragStart`, `onThumbDragEnd`, `onRangeDragStart` and `onRangeDragEnd`
 
 
 ### v2.0.x

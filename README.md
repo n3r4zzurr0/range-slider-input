@@ -213,6 +213,10 @@ thumbsDisabled([false, false])  //  enabled   enabled
 thumbsDisabled([true, true])    // disabled  disabled
 ```
 
+#### `currentValueIndex()`
+
+Returns the index (`0` for the lower value and `1` for the upper value) of the value which is currently being modified.
+Returns `-1` when the slider is idle.
 
 ## Elements
 

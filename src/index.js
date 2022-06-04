@@ -538,6 +538,9 @@ module.exports = (element, options = {}) => {
     },
     rangeSlideDisabled: (d = true) => {
       options.rangeSlideDisabled = !!d
+    },
+    currentValueIndex: () => {
+      return thumbDrag ? (thumbDrag === MIN ? 0 : 1) : -1
     }
   }
 }
