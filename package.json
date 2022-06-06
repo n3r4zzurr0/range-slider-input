@@ -1,6 +1,6 @@
 {
   "name": "range-slider-input",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": false,
   "description": "A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles",
   "author": "Utkarsh Verma",

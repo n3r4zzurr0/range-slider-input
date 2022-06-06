@@ -1,5 +1,5 @@
-[travis-image]: https://img.shields.io/travis/n3r4zzurr0/range-slider-input/main.svg
-[travis-url]: https://app.travis-ci.com/github/n3r4zzurr0/range-slider-input
+[circleci-image]: https://circleci.com/gh/n3r4zzurr0/range-slider-input.svg?style=shield
+[circleci-url]: https://circleci.com/gh/n3r4zzurr0/range-slider-input
 [npm-image]: https://img.shields.io/npm/v/range-slider-input.svg
 [npm-url]: https://npmjs.org/package/range-slider-input
 [size-image]: https://img.shields.io/bundlephobia/minzip/range-slider-input@latest
@@ -12,7 +12,7 @@
 [license-url]: https://github.com/n3r4zzurr0/range-slider-input/blob/main/LICENSE
 
 # range-slider-input
-[![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![minzipped size][size-image]][size-url] [![known vulnerabilities][vulnerabilities-image]][vulnerabilities-url] [![javascript style guide][standard-image]][standard-url] [![license][license-image]][license-url]
+[![circleci][circleci-image]][circleci-url] [![npm][npm-image]][npm-url] [![minzipped size][size-image]][size-url] [![known vulnerabilities][vulnerabilities-image]][vulnerabilities-url] [![javascript style guide][standard-image]][standard-url] [![license][license-image]][license-url]
 
 A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles.
 
