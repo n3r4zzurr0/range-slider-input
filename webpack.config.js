@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   mode: 'production',
   entry: {
-    'rangeslider': './src/index.style.js',
+    rangeslider: './src/index.style.js',
     'rangeslider.nostyle': './src/index.js'
   },
   output: {
