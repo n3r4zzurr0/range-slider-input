@@ -1,3 +1,6 @@
+### v2.3.x
+Added a return value property: [`removeGlobalEventListeners()`](https://github.com/n3r4zzurr0/range-slider-input#removeglobaleventlisteners)
+
 ### v2.2.x
 Added a return value property: [`currentValueIndex()`](https://github.com/n3r4zzurr0/range-slider-input#currentvalueindex)
 

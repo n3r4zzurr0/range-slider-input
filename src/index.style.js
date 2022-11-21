@@ -446,6 +446,16 @@ module.exports = (element, options = {}) => {
   let thumbDrag = false
   let startPos = 0
 
+  if (!this.cssInjected) {
+    // Inject Core CSS (on first call)
+    const style = document.createElement('style')
+    style.textContent = '.range-slider{touch-action:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;cursor:pointer;display:block;position:relative;width:100%;height:8px;background:#ddd;border-radius:4px}.range-slider[data-vertical]{height:100%;width:8px}.range-slider[data-disabled]{opacity:.5;cursor:not-allowed}.range-slider .range-slider__thumb{position:absolute;z-index:3;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);border-radius:50%;background:#2196f3}.range-slider .range-slider__thumb:focus-visible{outline:0;box-shadow:0 0 0 6px rgba(33,150,243,.5)}.range-slider[data-vertical] .range-slider__thumb{left:50%}.range-slider .range-slider__thumb[data-disabled]{z-index:2}.range-slider .range-slider__range{position:absolute;z-index:1;transform:translate(0,-50%);top:50%;width:100%;height:100%;background:#51adf6}.range-slider[data-vertical] .range-slider__range{left:50%;transform:translate(-50%,0)}.range-slider input[type=range]{-webkit-appearance:none;pointer-events:none;position:absolute;z-index:2;top:0;left:0;width:0;height:0;background-color:transparent}.range-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none}.range-slider input[type=range]::-moz-range-thumb{width:0;height:0;border:0}.range-slider input[type=range]:focus{outline:0}'
+    const head = document.head
+    const tag = document.querySelector('head>style,head>link')
+    if (tag) { head.insertBefore(style, tag) } else { head.appendChild(style) }
+    this.cssInjected = true
+  }
+
   // Set options to default values if not set
   fallbackToDefault('rangeSlideDisabled', false)
   fallbackToDefault('thumbsDisabled', [false, false])

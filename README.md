@@ -218,6 +218,10 @@ thumbsDisabled([true, true])    // disabled  disabled
 Returns the index (`0` for the lower value and `1` for the upper value) of the value which is currently being modified.
 Returns `-1` when the slider is idle.
 
+#### `removeGlobalEventListeners()`
+
+Removes the global event listeners. It should be called when removing the range slider element from the DOM dynamically.
+
 ## Elements
 
 ```html
