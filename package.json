@@ -17,8 +17,10 @@
   "main": "dist/rangeslider.nostyle.umd.min.js",
   "unpkg": "dist/rangeslider.umd.min.js",
   "jsdelivr": "dist/rangeslider.umd.min.js",
+  "types": "types/index.d.ts",
   "files": [
     "dist/",
+    "types/",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
