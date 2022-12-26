@@ -56,7 +56,7 @@ import 'range-slider-input/dist/style.css';
 **CDN**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/range-slider-input@2.3/dist/rangeslider.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/range-slider-input@2.4/dist/rangeslider.umd.min.js"></script>
 ```
 
 or
