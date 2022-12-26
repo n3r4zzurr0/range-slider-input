@@ -1,3 +1,6 @@
+### v2.4.x
+Modified a property: [`onInput`](https://github.com/n3r4zzurr0/range-slider-input#options)
+
 ### v2.3.x
 Added a return value property: [`removeGlobalEventListeners()`](https://github.com/n3r4zzurr0/range-slider-input#removeglobaleventlisteners)
 

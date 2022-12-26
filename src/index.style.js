@@ -80,7 +80,7 @@ module.exports = (element, options = {}) => {
   // -> thumbs are dragged
   // -> element is clicked upon
   // -> an arrow key is pressed
-  const setValue = (newValue, forceSet = false, callback = true) => {
+  const setValue = (newValue, forceSet = false, callback = true, userInteraction = true) => {
     // Current value as set in the input elements
     // which could change while changing min, max and step values
     const currentValue = setMinMaxProps(input[index.min].value, input[index.max].value)
@@ -121,7 +121,7 @@ module.exports = (element, options = {}) => {
     // Update the positions, dimensions and aria attributes everytime a value is set
     // and call the onInput function from options (if set)
     if (valueSet) {
-      if (callback && options.onInput) { options.onInput([value.min, value.max]) }
+      if (callback && options.onInput) { options.onInput([value.min, value.max], userInteraction) }
       syncThumbDimensions()
       updateThumbs()
       updateRange()
@@ -217,7 +217,7 @@ module.exports = (element, options = {}) => {
       input[1][_] = options[_]
     })
     maxRangeWidth = options.max - options.min
-    setValue('', true)
+    setValue('', true, true, false)
     updateRangeLimits()
   }
 
@@ -528,12 +528,12 @@ module.exports = (element, options = {}) => {
       return getSetProps(!s, actualStepValue(), () => {
         input[0].step = s
         input[1].step = s
-        setValue('', true)
+        setValue('', true, true, false)
       })
     },
     value: (v = false) => {
       return getSetProps(!v, [value.min, value.max], () => {
-        setValue(setMinMaxProps(v[0], v[1]), true)
+        setValue(setMinMaxProps(v[0], v[1]), true, true, false)
         updateRangeLimits()
       })
     },
@@ -541,7 +541,7 @@ module.exports = (element, options = {}) => {
       return getSetProps(!o, options.orientation, () => {
         options.orientation = o
         updateOrientation()
-        setValue('', true)
+        setValue('', true, true, false)
       })
     },
     disabled: (d = true) => {

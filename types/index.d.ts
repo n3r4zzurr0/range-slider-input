@@ -42,7 +42,7 @@ export interface RangeSliderConfig {
     step?: Step,
     /** @default [25,75] */
     value?: [number, number],
-    onInput?: (value: [number, number]) => void,
+    onInput?: (value: [number, number], userInteraction: boolean) => void,
     onThumbDragStart?: () => void,
     onThumbDragEnd?: () => void,
     onRangeDragStart?: () => void,

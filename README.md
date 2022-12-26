@@ -128,7 +128,7 @@ Object that specifies the characteristics of the range slider element with the f
     <td><code>onInput</code></td>
     <td>function</td>
     <td>NOOP</td>
-    <td>Function to be called when there is a change in the value(s) of range sliders upon user interaction or upon calling <a href="#min-max-step-value-and-orientation"><code>min()</code></a>, <a href="#min-max-step-value-and-orientation"><code>max()</code></a>, <a href="#min-max-step-value-and-orientation"><code>step()</code></a> or <a href="#min-max-step-value-and-orientation"><code>value()</code></a>.</td>
+    <td>Function to be called when there is a change in the value(s) of range sliders upon user interaction or upon calling <a href="#min-max-step-value-and-orientation"><code>min()</code></a>, <a href="#min-max-step-value-and-orientation"><code>max()</code></a>, <a href="#min-max-step-value-and-orientation"><code>step()</code></a>, <a href="#min-max-step-value-and-orientation"><code>value()</code></a> or <a href="#min-max-step-value-and-orientation"><code>orientation()</code></a>.<br><br><b>Usage:</b> <code>(value, userInteraction) => {}</code><br><br><code>value</code> holds the current lower and upper values in an array and <code>userInteraction</code> is a boolean value which is <code>true</code> if the value is changed upon user interaction.</td>
 </tr>
 <tr>
     <td><code>onThumbDragStart</code></td>
