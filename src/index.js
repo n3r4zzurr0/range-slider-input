@@ -149,8 +149,9 @@ module.exports = (element, options = {}) => {
   // -> setValue is called and a value is set
   // -> window is resized
   const updateRange = () => {
-    const deltaOffset = ((0.5 - ((value.min - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).min) / element[`client${ifVerticalElse('Height', 'Width')}`]
-    const deltaDimension = ((0.5 - ((value.max - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).max) / element[`client${ifVerticalElse('Height', 'Width')}`]
+    const elementBounds = element.getBoundingClientRect()
+    const deltaOffset = ((0.5 - ((value.min - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).min) / ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)
+    const deltaDimension = ((0.5 - ((value.max - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).max) / ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)
     range.style[ifVerticalElse('top', 'left')] = `${(((value.min - options.min) / maxRangeWidth) + deltaOffset) * 100}%`
     range.style[ifVerticalElse('height', 'width')] = `${(((value.max - options.min) / maxRangeWidth) - ((value.min - options.min) / maxRangeWidth) - deltaOffset + deltaDimension) * 100}%`
   }
@@ -247,7 +248,9 @@ module.exports = (element, options = {}) => {
 
   // thumb position calculation depending upon the pointer position
   const currentPosition = (e, node) => {
-    const currPos = ((node[`offset${ifVerticalElse('Top', 'Left')}`] + (e[`client${ifVerticalElse('Y', 'X')}`] - node.getBoundingClientRect()[ifVerticalElse('top', 'left')]) - (thumbDrag ? ((0.5 - (value[thumbDrag] - options.min) / maxRangeWidth) * ifVerticalElse(thumbHeight, thumbWidth)[thumbDrag]) : 0)) / element[`client${ifVerticalElse('Height', 'Width')}`]) * maxRangeWidth + options.min
+    const elementBounds = element.getBoundingClientRect()
+    const nodeBounds = node.getBoundingClientRect()
+    const currPos = ((ifVerticalElse(nodeBounds.top - elementBounds.top, nodeBounds.left - elementBounds.left) + (e[`client${ifVerticalElse('Y', 'X')}`] - node.getBoundingClientRect()[ifVerticalElse('top', 'left')]) - (thumbDrag ? ((0.5 - (value[thumbDrag] - options.min) / maxRangeWidth) * ifVerticalElse(thumbHeight, thumbWidth)[thumbDrag]) : 0)) / ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)) * maxRangeWidth + options.min
     if (currPos < options.min) { return options.min }
     if (currPos > options.max) { return options.max }
     return currPos
@@ -257,7 +260,7 @@ module.exports = (element, options = {}) => {
     return !e.target.classList.contains(className)
   }
 
-  const elementFocused = e => {
+  const elementFocused = (e, repeat = true) => {
     let setFocus = false
 
     if (!options.disabled && ((doesntHaveClassName(e, 'range-slider__thumb') && doesntHaveClassName(e, 'range-slider__range')) || (options.rangeSlideDisabled && doesntHaveClassName(e, 'range-slider__thumb')))) { setFocus = true }
@@ -272,22 +275,23 @@ module.exports = (element, options = {}) => {
 
       if (options.thumbsDisabled[0]) {
         if (currPos >= value.min) {
-          setValue(setMinMaxProps(value.min, currPos), true)
-          initiateThumbDrag(e, index.max, thumb[index.max])
+          setValue(setMinMaxProps(value.min, currPos), true, !repeat)
+          initiateThumbDrag(e, index.max, thumb[index.max], !repeat)
         }
       } else if (options.thumbsDisabled[1]) {
         if (currPos <= value.max) {
-          setValue(setMinMaxProps(currPos, value.max), true)
-          initiateThumbDrag(e, index.min, thumb[index.min])
+          setValue(setMinMaxProps(currPos, value.max), true, !repeat)
+          initiateThumbDrag(e, index.min, thumb[index.min], !repeat)
         }
       } else {
         let nearestThumbIndex = index.max
-        if (deltaMin === deltaMax) { setValue(setMinMaxProps(value.min, currPos), true) } else {
-          setValue(setMinMaxProps(deltaMin < deltaMax ? currPos : value.min, deltaMax < deltaMin ? currPos : value.max), true)
+        if (deltaMin === deltaMax) { setValue(setMinMaxProps(value.min, currPos), true, !repeat) } else {
+          setValue(setMinMaxProps(deltaMin < deltaMax ? currPos : value.min, deltaMax < deltaMin ? currPos : value.max), true, !repeat)
           nearestThumbIndex = deltaMin < deltaMax ? index.min : index.max
         }
-        initiateThumbDrag(e, nearestThumbIndex, thumb[nearestThumbIndex])
+        initiateThumbDrag(e, nearestThumbIndex, thumb[nearestThumbIndex], !repeat)
       }
+      if (repeat) { elementFocused(e, false) }
     }
   }
 
@@ -298,11 +302,11 @@ module.exports = (element, options = {}) => {
     isDragging = true
   }
 
-  const initiateThumbDrag = (e, i, node) => {
+  const initiateThumbDrag = (e, i, node, callback = true) => {
     if (!options.disabled && !options.thumbsDisabled[currentIndex(i)]) {
       initiateDrag(e, node)
       thumbDrag = index.min === i ? MIN : MAX
-      if (options.onThumbDragStart) { options.onThumbDragStart() }
+      if (callback && options.onThumbDragStart) { options.onThumbDragStart() }
     }
   }
 
