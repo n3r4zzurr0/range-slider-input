@@ -1,6 +1,6 @@
 {
   "name": "range-slider-input",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "private": false,
   "description": "A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles",
   "author": "Utkarsh Verma",
@@ -54,7 +54,7 @@
     "jest": "^28.1.0",
     "jsdom": "^19.0.0",
     "standard": "^17.0.0",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.2",
     "webpack-cli": "^5.0.0"
   }
 }
