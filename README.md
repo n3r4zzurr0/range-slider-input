@@ -16,7 +16,7 @@
 # range-slider-input
 [![circleci][circleci-image]][circleci-url] [![npm][npm-image]][npm-url] [![minzipped size][size-image]][size-url] [![jsDeliver hits][jsdelivr-image]][jsdelivr-url] [![known vulnerabilities][vulnerabilities-image]][vulnerabilities-url] [![javascript style guide][standard-image]][standard-url] [![license][license-image]][license-url]
 
-A lightweight (~2kB) library to create range sliders that can capture a value or a range of values with one or two drag handles.
+A lightweight (~9kB) library to create range sliders that can capture a value or a range of values with one or two drag handles.
 
 **[Examples](https://n3r4zzurr0.in/range-slider-input/) / [CodePen](https://codepen.io/n3r4zzurr0/pen/eYVJBMV)**
 
