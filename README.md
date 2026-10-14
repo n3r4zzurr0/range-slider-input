@@ -222,7 +222,7 @@ Returns `-1` when the slider is idle.
 
 #### `removeGlobalEventListeners()`
 
-Removes the global event listeners. It should be called when removing the range slider element from the DOM dynamically.
+Removes the global event listeners (and disconnects the `ResizeObserver` watching the element). It should be called when removing the range slider element from the DOM dynamically.
 
 ## Elements
 

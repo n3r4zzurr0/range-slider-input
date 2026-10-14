@@ -148,10 +148,14 @@ module.exports = (element, options = {}) => {
   // Called when,
   // -> setValue is called and a value is set
   // -> window is resized
+  // -> element is resized (or shown after being hidden)
   const updateRange = () => {
     const elementBounds = element.getBoundingClientRect()
-    const deltaOffset = ((0.5 - ((value.min - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).min) / ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)
-    const deltaDimension = ((0.5 - ((value.max - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).max) / ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)
+    const elementDimension = ifVerticalElse(elementBounds.bottom - elementBounds.top, elementBounds.right - elementBounds.left)
+    // Element has no dimensions if it (or one of its parents) is hidden, e.g. with display: none
+    // Skip the thumb offset correction in that case to avoid dividing by zero
+    const deltaOffset = elementDimension ? ((0.5 - ((value.min - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).min) / elementDimension : 0
+    const deltaDimension = elementDimension ? ((0.5 - ((value.max - options.min) / maxRangeWidth)) * ifVerticalElse(thumbHeight, thumbWidth).max) / elementDimension : 0
     range.style[ifVerticalElse('top', 'left')] = `${(((value.min - options.min) / maxRangeWidth) + deltaOffset) * 100}%`
     range.style[ifVerticalElse('height', 'width')] = `${(((value.max - options.min) / maxRangeWidth) - ((value.min - options.min) / maxRangeWidth) - deltaOffset + deltaDimension) * 100}%`
   }
@@ -239,10 +243,12 @@ module.exports = (element, options = {}) => {
   // -> setValue is called and a value is set (called before updateThumbs() and updateRange())
   // -> thumb / range drag is initiated
   // -> window is resized
+  // -> element is resized (or shown after being hidden)
   const syncThumbDimensions = () => {
+    // Computed width & height may not be numeric (e.g. 'auto') if the CSS isn't loaded yet
     iterateMinMaxProps(_ => {
-      thumbWidth[_] = float(style(thumb[index[_]]).width)
-      thumbHeight[_] = float(style(thumb[index[_]]).height)
+      thumbWidth[_] = float(style(thumb[index[_]]).width) || 0
+      thumbHeight[_] = float(style(thumb[index[_]]).height) || 0
     })
   }
 
@@ -507,6 +513,11 @@ module.exports = (element, options = {}) => {
   addNodeEventListener(document, 'pointerup', unfocus)
   addNodeEventListener(window, 'resize', resize)
 
+  // Recalculate positions when the element itself is resized, which also covers the element
+  // being shown after it was initialized while hidden (e.g. inside a parent with display: none)
+  const resizeObserver = window.ResizeObserver ? new window.ResizeObserver(resize) : null
+  if (resizeObserver) { resizeObserver.observe(element) }
+
   return {
     min: (m = false) => {
       return getSetProps(!m && m !== 0, options.min, () => {
@@ -559,6 +570,7 @@ module.exports = (element, options = {}) => {
       removeNodeEventListener(document, 'pointermove', drag)
       removeNodeEventListener(document, 'pointerup', unfocus)
       removeNodeEventListener(window, 'resize', resize)
+      if (resizeObserver) { resizeObserver.disconnect() }
     }
   }
 }

@@ -187,4 +187,55 @@ describe('index.html', () => {
     expect(!lowerThumb.hasAttribute('data-active')).not.toBeNull()
   })
 
+  test('range is styled when the element has no dimensions (e.g. hidden)', () => {
+    // JSDOM does no layout, so getBoundingClientRect() returns all zeroes,
+    // just like it does for an element inside a parent with display: none
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    rangeSlider(el, { value: [20, 60] })
+
+    const range = el.querySelector('.range-slider__range')
+    expect(range.style.left).toEqual('20%')
+    expect(range.style.width).toEqual('40%')
+  })
+
+  test('element resize updates the range and observer is disconnected', () => {
+    // Save the original so it can be restored even if an assertion fails
+    const hadResizeObserver = 'ResizeObserver' in window
+    const originalResizeObserver = window.ResizeObserver
+    const instances = []
+    window.ResizeObserver = class {
+      constructor (callback) { this.callback = callback; this.observed = []; this.disconnected = false; instances.push(this) }
+      observe (el) { this.observed.push(el) }
+      disconnect () { this.disconnected = true }
+    }
+
+    try {
+      const el = document.createElement('div')
+      document.body.appendChild(el)
+      const slider = rangeSlider(el, { value: [20, 60] })
+      const range = el.querySelector('.range-slider__range')
+
+      expect(instances.length).toEqual(1)
+      expect(instances[0].observed).toEqual([el])
+
+      // Simulate the element being shown with a width of 200px (thumbs are 0px wide in JSDOM)
+      range.style.left = ''
+      range.style.width = ''
+      el.getBoundingClientRect = () => ({ top: 0, bottom: 8, left: 0, right: 200 })
+      instances[0].callback([])
+      expect(range.style.left).toEqual('20%')
+      expect(range.style.width).toEqual('40%')
+
+      slider.removeGlobalEventListeners()
+      expect(instances[0].disconnected).toEqual(true)
+    } finally {
+      if (hadResizeObserver) {
+        window.ResizeObserver = originalResizeObserver
+      } else {
+        delete window.ResizeObserver
+      }
+    }
+  })
+
 })
